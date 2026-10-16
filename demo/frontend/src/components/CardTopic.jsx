@@ -1,29 +1,29 @@
 import './CardTopic.css'
-import programmingIcon from '../assets/icons/programming-icon.svg'
+import { getTopicIcon } from '../utils/icons'
 import calendarIcon from '../assets/icons/calendar-icon-white.svg'
 import personsIcon from '../assets/icons/persons-icon.svg'
 
-function CardTopic() {
+function CardTopic({ topic, date, members }) {
     return(
-        <hesder className = 'card-header'>
+        <header className = 'card-header'>
             <div className='card-topic'>
                 <div className="card-meta__item">
-                    <img src={programmingIcon} alt=''/>
-                    <span>Программирование</span>
+                    <img src={getTopicIcon(topic)} alt=''/>
+                    <span>{topic}</span>
                 </div>
             </div>
 
             <div className='card-meta'>
                 <div className="card-meta__item">
                     <img src={calendarIcon} alt=''/>
-                    <span>06.07.2026</span>
+                    <span>{date}</span>
                 </div>
                 <div className="card-meta__item">
                     <img src={personsIcon} alt=''/>
-                    <span>666</span>
+                    <span>{members}</span>
                 </div>
             </div>
-        </hesder>
+        </header>
     )
 }
 

@@ -1,22 +1,18 @@
 import './EventCard.css'
 import CardTopic from './CardTopic'
-import Avatar from '../assets/images/avatar2.svg'
+import defaultAvatar from '../assets/images/avatar2.svg'
 
-function EventCard() {
+function EventCard({ topic, date, members, author, text, avatar }) {
   return (
     <article className="event-card">
-      <CardTopic/>
+      <CardTopic topic={topic} date={date} members={members}/>
 
       <div className="card-body">
-        <img className="card-avatar" src={Avatar} alt='Аватар' />
+        <img className="card-avatar" src={avatar || defaultAvatar} alt='Аватар' />
 
         <div className='card-content'>
-          <p className='card-author'>Наташа67:</p>
-          <p className='card-text'>
-            собираю компанию, чтобы вместе готовиться к пересдаче по питону,
-            будем вместе молиться, чтобы нас не отчислили олололололололол
-            fodskfksad;lfkdlkfl;ak;lfkda;fkd;lskfksfkdskfds;lkf;ldskf;ldsklf;kdsf
-          </p>
+          <p className='card-author'>{author}:</p>
+          <p className='card-text'>{text}</p>
         </div>
       </div>
     </article>
