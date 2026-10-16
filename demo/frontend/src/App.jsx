@@ -1,9 +1,9 @@
-import CardTopic from './components/CardTopic'
+import EventCard from './components/EventCard'
 
 function App() {
   return (
     <div>
-      <CardTopic />
+      <EventCard />
     </div>
   )
 }

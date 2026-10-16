@@ -1,0 +1,50 @@
+.event-card {
+  box-sizing: border-box;
+  width: 750px;
+  height: 156px;
+  background: rgba(217, 217, 217, 0.85);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 16px 30px 16px 20px;
+}
+
+.card-avatar {
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+}
+
+.card-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-author {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.card-text {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #222;
+  overflow-wrap: anywhere;
+
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
