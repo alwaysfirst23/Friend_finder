@@ -1,0 +1,5 @@
+.events-list {
+  display: flex;
+  flex-direction: column;   /* карточки друг под другом */
+  gap: 14px;                /* расстояние между ними */
+}
