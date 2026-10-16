@@ -1,7 +1,9 @@
+import CardTopic from './components/CardTopic'
+
 function App() {
   return (
     <div>
-      <h1>Найдёмся</h1>
+      <CardTopic />
     </div>
   )
 }
