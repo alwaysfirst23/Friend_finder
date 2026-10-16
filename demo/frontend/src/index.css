@@ -1,0 +1,7 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+button, input, textarea {
+  font-family: inherit;
+}
