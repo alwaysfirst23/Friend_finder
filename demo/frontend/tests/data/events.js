@@ -17,7 +17,7 @@ export const events = [
     avatar: avatar1 },
 
   { id: 2, 
-    topic: "Волонёрство", 
+    topic: "Волонтёрство", 
     date: "07.07.2027", 
     members: 30,
     author: "Влад", 
@@ -28,7 +28,7 @@ export const events = [
     topic: "Бег", 
     date: "23.12.2026", 
     members: 12,
-    author: "Фёдр", 
+    author: "Мифодий", 
     text: "Ищу компанию, с которой будем бегать по утрам (я на машине)!", 
     avatar: avatar3 },
 

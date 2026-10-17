@@ -29,7 +29,7 @@ const topicIcons = {
     'Учёба':'studies',
     'Театры':'theater',
     'Видео игры':'videogames',
-    'Волонёрство':'volunteering',
+    'Волонтёрство':'volunteering',
     'Прогулки':'walks',
 }
 
