@@ -1,6 +1,6 @@
 .event-card {
   box-sizing: border-box;
-  width: 750px;
+  width: 100%;
   height: 156px;
   background: rgba(217, 217, 217, 0.85);
   border-radius: 20px;
