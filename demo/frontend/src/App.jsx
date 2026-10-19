@@ -2,6 +2,7 @@ import MainHeader from './components/MainHeader'
 import EventCard from './components/EventCard'
 import { events } from '../tests/data/events'
 import './App.css'
+import Menu from './components/Menu'
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
 
       <div className="layout">
         <aside className="sidebar">
-          {/* тут будет меню */}
+          <Menu />
         </aside>
 
         <main className="content">
