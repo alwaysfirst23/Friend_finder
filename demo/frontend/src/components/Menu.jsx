@@ -8,7 +8,7 @@ import settingsIcon from '../assets/icons/settings-icon-green.svg'
 function Menu() {
     return(
         <div className='navigation'>
-            <p className='navigation__input'>
+            <p className='navigation__input active'>
                 <img src={homeIcon} alt='' />
                 <span>Главная</span>
             </p>
