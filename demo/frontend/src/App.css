@@ -1,49 +1,25 @@
-/* Страница ровно во весь экран: шапка и меню стоят на месте,
-   прокручивается только лента карточек */
-.app {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.app > .main-header {
-  flex-shrink: 0;
-}
-
 .layout {
-  flex: 1;
   display: flex;
-  min-height: 0;
+  align-items: flex-start;
 }
 
-/* Левое меню: пункты сверху, горы прижаты к низу */
 .sidebar {
-  display: flex;
-  flex-direction: column;
-  width: 18%;
+  width: 226px;
   flex-shrink: 0;
+  min-height: 600px;
   border-right: 4px solid #ededed;
 }
 
-.sidebar__mountains {
-  display: block;
-  width: 100%;
-  margin-top: auto;
-}
-
-/* Правая часть: сверху блок кнопок, ниже прокручиваемая лента */
 .content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-width: 0;
+  gap: 16px;
+  padding: 24px;
 }
 
 .events-list {
-  flex: 1;
-  display: grid;
-  align-content: start;
+  display: flex;
+  flex-direction: column;
   gap: 16px;
-  padding: 16px 36px 24px;
-  overflow-y: auto;
 }
