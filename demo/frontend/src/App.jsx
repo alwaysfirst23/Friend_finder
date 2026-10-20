@@ -1,24 +1,22 @@
 import MainHeader from './components/MainHeader'
 import EventCard from './components/EventCard'
-import FeedControls from './components/FeedControls'
 import { events } from '../tests/data/events'
 import './App.css'
-import Menu from './components/Menu'
-import mountains from './assets/images/mount.svg'
 
 function App() {
   return (
-    <div className="app">
+    <>
       <MainHeader />
 
       <div className="layout">
         <aside className="sidebar">
-          <Menu />
-          <img className="sidebar__mountains" src={mountains} alt="Вместе интереснее" />
+          {/* тут будет меню */}
         </aside>
 
         <main className="content">
-          <FeedControls />
+          <div className="feed-controls">
+            {/* тут будут: вкладки, фильтр, создать событие */}
+          </div>
 
           <div className="events-list">
             {events.map((event) => (
@@ -27,7 +25,7 @@ function App() {
           </div>
         </main>
       </div>
-    </div>
+    </>
   )
 }
 
