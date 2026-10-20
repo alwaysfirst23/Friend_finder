@@ -1,0 +1,64 @@
+.feed-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 36px;
+    border-bottom: 4px solid #ededed;
+    flex-shrink: 0;
+}
+
+/* Серая плашка с двумя вкладками */
+.feed-tabs {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+    padding: 13px 16px;
+    background: #ededed;
+    border-radius: 22px;
+}
+
+.feed-tab {
+    flex: 1;
+    height: 40px;
+    border: none;
+    border-radius: 20px;
+    background: #235c55;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.feed-tab.active {
+    background: #2a8f82;
+}
+
+.feed-tab:hover {
+    filter: brightness(1.1);
+}
+
+/* Круглые кнопки: фильтр и «создать событие» */
+.round-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 66px;
+    height: 66px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.round-button--light {
+    background: #ededed;
+}
+
+.round-button--dark {
+    background: #235c55;
+}
+
+.round-button:hover {
+    filter: brightness(0.95);
+}
