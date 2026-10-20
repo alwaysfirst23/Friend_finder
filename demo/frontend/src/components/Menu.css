@@ -1,34 +1,41 @@
 .navigation {
     display: flex;
     flex-direction: column;
-    padding: 20px 15px;
-    gap: 8px;
-    font-size: 15px;
-    color: #1d504a;
-    font-weight: 600;
+    gap: 10px;
+    padding: 20px 30px;
 }
 
-.navigation__input {
+.navigation__item {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin: 0;
-    padding: 10px 16px;
+    width: 100%;
+    padding: 8px 14px;
+    border: none;
     border-radius: 15px;
+    background: transparent;
+    color: #235c55;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: left;
     cursor: pointer;
 }
 
-.navigation__input:hover {
+.navigation__item:hover {
     background-color: #f0f7f6;
 }
 
-.navigation__input.active {
-    background-color: #247a74;
+.navigation__item.active {
+    background-color: #2a8f82;
     color: #fff;
 }
 
-.navigation img {
+/* Коробка одного размера для всех иконок: сами иконки в файлах разной величины */
+.navigation__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 20px;
     height: 20px;
-    object-fit: contain;
+    flex-shrink: 0;
 }
