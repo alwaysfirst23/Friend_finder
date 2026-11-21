@@ -1,0 +1,21 @@
+package com.example.demo.repository;
+
+import com.example.demo.entity.Event;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.Collection;
+import java.util.List;
+
+public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
+
+    @Query(value = """
+            SELECT event_id, COUNT(*) AS cnt
+            FROM event_participants
+            WHERE event_id IN (:eventIds)
+            GROUP BY event_id
+            """, nativeQuery = true)
+    List<Object[]> countParticipantsByEventIds(@Param("eventIds") Collection<Long> eventIds);
+}
