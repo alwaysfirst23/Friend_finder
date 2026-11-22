@@ -1,9 +1,13 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.ApplicationDto;
 import com.example.demo.dto.CategoryDto;
+import com.example.demo.dto.CreateApplicationRequest;
 import com.example.demo.dto.CreateEventRequest;
+import com.example.demo.dto.EventDetailsDto;
 import com.example.demo.dto.EventFeedItemDto;
 import com.example.demo.dto.EventTypeDto;
+import com.example.demo.entity.enums.ApplicationStatus;
 import com.example.demo.service.EventService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/events")
@@ -38,8 +43,11 @@ public class EventController {
     }
 
     @GetMapping("/{id}")
-    public EventFeedItemDto getById(@PathVariable Long id) {
-        return eventService.getEventById(id);
+    public EventDetailsDto getById(
+            @PathVariable Long id,
+            @RequestParam(required = false) Long userId
+    ) {
+        return eventService.getEventDetails(id, userId);
     }
 
     @PostMapping
@@ -56,5 +64,36 @@ public class EventController {
     @GetMapping("/types")
     public List<EventTypeDto> getEventTypes() {
         return eventService.getEventTypes();
+    }
+
+    @PostMapping("/{id}/favorite")
+    public Map<String, Boolean> toggleFavorite(
+            @PathVariable Long id,
+            @RequestParam Long userId
+    ) {
+        return Map.of("isFavorite", eventService.toggleFavorite(id, userId));
+    }
+
+    @PostMapping("/{id}/applications")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApplicationDto apply(
+            @PathVariable Long id,
+            @Valid @RequestBody CreateApplicationRequest request
+    ) {
+        return eventService.applyToEvent(id, request);
+    }
+
+    @GetMapping("/{id}/applications")
+    public List<ApplicationDto> getApplications(@PathVariable Long id) {
+        return eventService.getEventApplications(id);
+    }
+
+    @PatchMapping("/{id}/applications/{appId}")
+    public ApplicationDto decideApplication(
+            @PathVariable Long id,
+            @PathVariable Long appId,
+            @RequestParam ApplicationStatus status
+    ) {
+        return eventService.decideApplication(id, appId, status);
     }
 }
