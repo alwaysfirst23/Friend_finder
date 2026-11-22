@@ -14,6 +14,14 @@ import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.EventRepository;
 import com.example.demo.repository.EventTypeRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.dto.ApplicationDto;
+import com.example.demo.dto.CreateApplicationRequest;
+import com.example.demo.dto.EventDetailsDto;
+import com.example.demo.dto.ParticipantDto;
+import com.example.demo.entity.Application;
+import com.example.demo.entity.enums.ApplicationStatus;
+import com.example.demo.repository.ApplicationRepository;
+import com.example.demo.repository.EventParticipantRepository;
 import jakarta.persistence.criteria.JoinType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -39,6 +48,8 @@ public class EventService {
     private final EventTypeRepository eventTypeRepository;
     private final UserRepository userRepository;
     private final EventMapper eventMapper;
+    private final ApplicationRepository applicationRepository;
+    private final EventParticipantRepository eventParticipantRepository;
 
     @Transactional(readOnly = true)
     public Page<EventFeedItemDto> getEventsFeed(
@@ -134,6 +145,120 @@ public class EventService {
         return eventTypeRepository.findAll().stream()
                 .map(t -> new EventTypeDto(t.getId(), t.getCode(), t.getName()))
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public EventDetailsDto getEventDetails(Long eventId, Long currentUserId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Мероприятие не найдено"));
+
+        List<ParticipantDto> participants = eventParticipantRepository.findAllByEventIdWithUser(eventId)
+                .stream()
+                .map(ep -> new ParticipantDto(
+                        ep.getUser().getId(),
+                        ep.getUser().getNickname(),
+                        ep.getUser().getAbout(),
+                        ep.getUser().getContact()
+                ))
+                .toList();
+
+        boolean isFavorite = currentUserId != null && eventRepository.isFavorite(currentUserId, eventId);
+        String myAppStatus = currentUserId == null ? null :
+                applicationRepository.findByEventIdAndUserId(eventId, currentUserId)
+                        .map(a -> a.getStatus().name())
+                        .orElse(null);
+
+        return new EventDetailsDto(
+                event.getId(),
+                event.getTitle(),
+                event.getDescription(),
+                event.getCategory().getId(),
+                event.getCategory().getName(),
+                event.getType().getCode(),
+                event.getType().getName(),
+                event.getStartsAt(),
+                event.getAddress(),
+                event.getMinAge(),
+                event.getGenderRestriction().name(),
+                event.getAuthor().getId(),
+                event.getAuthor().getNickname(),
+                event.getAuthor().getContact(),
+                participants.size(),
+                event.getMaxParticipants(),
+                isFavorite,
+                myAppStatus,
+                participants
+        );
+    }
+
+    @Transactional
+    public boolean toggleFavorite(Long eventId, Long userId) {
+        if (!eventRepository.existsById(eventId)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Мероприятие не найдено");
+        }
+        if (eventRepository.isFavorite(userId, eventId)) {
+            eventRepository.removeFavorite(userId, eventId);
+            return false;
+        } else {
+            eventRepository.addFavorite(userId, eventId);
+            return true;
+        }
+    }
+
+    @Transactional
+    public ApplicationDto applyToEvent(Long eventId, CreateApplicationRequest req) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Мероприятие не найдено"));
+        User user = userRepository.findById(req.userId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Пользователь не найден"));
+
+        if (event.getMaxParticipants() != null
+                && eventParticipantRepository.countByEventId(eventId) >= event.getMaxParticipants()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Свободных мест на мероприятие больше нет");
+        }
+
+        Application app = new Application();
+        app.setEvent(event);
+        app.setUser(user);
+        app.setMessage(req.message().trim());
+        app.setContact(req.contact().trim());
+
+        Application saved = applicationRepository.saveAndFlush(app);
+        return toApplicationDto(saved);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ApplicationDto> getEventApplications(Long eventId) {
+        return applicationRepository.findAllByEventIdWithUser(eventId)
+                .stream()
+                .map(this::toApplicationDto)
+                .toList();
+    }
+
+    @Transactional
+    public ApplicationDto decideApplication(Long eventId, Long appId, ApplicationStatus newStatus) {
+        Application app = applicationRepository.findById(appId)
+                .filter(a -> a.getEvent().getId().equals(eventId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Заявка не найдена"));
+
+        app.setStatus(newStatus);
+        app.setDecidedAt(OffsetDateTime.now());
+        Application saved = applicationRepository.saveAndFlush(app);
+        return toApplicationDto(saved);
+    }
+
+    private ApplicationDto toApplicationDto(Application a) {
+        return new ApplicationDto(
+                a.getId(),
+                a.getEvent().getId(),
+                a.getUser().getId(),
+                a.getUser().getNickname(),
+                a.getMessage(),
+                a.getContact(),
+                a.getStatus().name(),
+                a.getCreatedAt(),
+                a.getDecidedAt()
+        );
     }
 
     private Map<Long, Long> loadParticipantsCounts(List<Event> events) {

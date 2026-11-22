@@ -99,4 +99,8 @@ public class Event {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
+
+    @Min(1)
+    @Column(name = "max_participants")
+    private Short maxParticipants;
 }

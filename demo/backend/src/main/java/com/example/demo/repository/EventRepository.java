@@ -18,4 +18,15 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
             GROUP BY event_id
             """, nativeQuery = true)
     List<Object[]> countParticipantsByEventIds(@Param("eventIds") Collection<Long> eventIds);
+
+    @Query(value = "SELECT EXISTS(SELECT 1 FROM event_favorites WHERE user_id = :userId AND event_id = :eventId)", nativeQuery = true)
+    boolean isFavorite(@Param("userId") Long userId, @Param("eventId") Long eventId);
+
+    @org.springframework.data.jpa.repository.Modifying
+    @Query(value = "INSERT INTO event_favorites (user_id, event_id) VALUES (:userId, :eventId) ON CONFLICT DO NOTHING", nativeQuery = true)
+    void addFavorite(@Param("userId") Long userId, @Param("eventId") Long eventId);
+
+    @org.springframework.data.jpa.repository.Modifying
+    @Query(value = "DELETE FROM event_favorites WHERE user_id = :userId AND event_id = :eventId", nativeQuery = true)
+    void removeFavorite(@Param("userId") Long userId, @Param("eventId") Long eventId);
 }
