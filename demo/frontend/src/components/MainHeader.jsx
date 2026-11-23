@@ -1,5 +1,5 @@
 import './MainHeader.css'
-import Avatar from '../assets/images/avatar2.svg'
+import Avatar from '../assets/images/avatar9.svg'
 import locationIcon from '../assets/icons/location-icon-black.svg'
 import searchIcon from '../assets/icons/loupe-icon-black.svg'
 import logo from '../assets/logo/logo.svg'
